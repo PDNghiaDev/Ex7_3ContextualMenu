@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Ex7_3ContextualMenu</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="comments"> Comments</string>
+    <string name="title_not_connect">There\'s no posts at the moment</string>
+    <string name="title_btn_retry">RETRY</string>
+</resources>

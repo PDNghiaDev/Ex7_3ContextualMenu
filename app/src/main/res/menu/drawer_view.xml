@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_topics"
+        android:title="TOPICS">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_androiddev_fragment"
+                    android:icon="@drawable/ic_menu_item"
+                    android:title="ANDROIDDEV" />
+                <item
+                    android:id="@+id/nav_movies_fragment"
+                    android:icon="@drawable/ic_menu_item"
+                    android:title="MOVIES" />
+                <item
+                    android:id="@+id/nav_pics_fragment"
+                    android:icon="@drawable/ic_menu_item"
+                    android:title="PICS" />
+                <item
+                    android:id="@+id/nav_food_fragment"
+                    android:icon="@drawable/ic_menu_item"
+                    android:title="FOOD" />
+                <item
+                    android:id="@+id/nav_music_fragment"
+                    android:icon="@drawable/ic_menu_item"
+                    android:title="MUSIC" />
+                <item
+                    android:id="@+id/nav_comic_fragment"
+                    android:icon="@drawable/ic_menu_item"
+                    android:title="COMIC" />
+            </group>
+        </menu>
+    </item>
+</menu>
