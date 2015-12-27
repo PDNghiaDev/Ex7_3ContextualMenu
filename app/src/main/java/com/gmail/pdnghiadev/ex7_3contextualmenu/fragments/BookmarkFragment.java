@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
@@ -24,6 +25,7 @@ import java.util.List;
  * Created by PDNghiaDev on 12/26/2015.
  */
 public class BookmarkFragment extends Fragment {
+    public static final String TAG = "BookmarkFragment";
     private RecyclerView mRecyclerView;
     private DBAdapter dbAdapter;
     private List<Children> mList = new ArrayList<>();
@@ -34,15 +36,16 @@ public class BookmarkFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: ");
         dbAdapter = new DBAdapter(getActivity());
         dbAdapter.open();
         mList = dbAdapter.getAllBookmark();
-        dbAdapter.close();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView: ");
         View view = inflater.inflate(R.layout.fragment_bookmark, container, false);
 
         loadComponents(view);
@@ -56,7 +59,7 @@ public class BookmarkFragment extends Fragment {
             mRecyclerView.setLayoutManager(mGridLayoutManager);
         }
 
-        mAdapter = new BookmarkAdapter(mList, getResources().getColor(R.color.colorStickyPost), getResources().getColor(R.color.colorTitle));
+        mAdapter = new BookmarkAdapter(getActivity(), mList, getResources().getColor(R.color.colorStickyPost), getResources().getColor(R.color.colorTitle));
         mRecyclerView.setAdapter(mAdapter);
 
         return view;
@@ -75,6 +78,12 @@ public class BookmarkFragment extends Fragment {
         } else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             mRecyclerView.setLayoutManager(mGridLayoutManager);
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        dbAdapter.close();
     }
 
 }

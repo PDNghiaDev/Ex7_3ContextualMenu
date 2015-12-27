@@ -95,12 +95,14 @@ public class RedditAdapter extends RecyclerView.Adapter {
                         ((RedditViewHolder) holder).mBookmark.setBackgroundResource(R.drawable.ic_bookmark_star_unselected);
                         dbAdapter.deleteChildren(children.getId());
                     }
+
                 }
             });
         }else {
             ((ProgressViewHolder) holder).progressBar.setIndeterminate(true);
         }
     }
+
 
     public void clearAdapter() {
         listChildrend.clear();

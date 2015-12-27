@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.gmail.pdnghiadev.ex7_3contextualmenu.model.Children;
 
@@ -53,8 +54,9 @@ public class DBAdapter {
     }
 
     // TODO: Delete a row with id
-    public void deleteChildren(String id) {
-        db.delete(DBConstract.BOOKMARK_TABLE, DBConstract.BOOKMARK_COLUMN_ID + "=\"" + id + "\"", null);
+    public boolean deleteChildren(String id) {
+        Log.d("TAG", "deleteChildren: " + id);
+        return db.delete(DBConstract.BOOKMARK_TABLE, DBConstract.BOOKMARK_COLUMN_ID + "=\"" + id + "\"", null) > 0;
     }
 
     // TODO: Get all row of Table
