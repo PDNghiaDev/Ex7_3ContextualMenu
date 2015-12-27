@@ -1,14 +1,18 @@
 package com.gmail.pdnghiadev.ex7_3contextualmenu.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.gmail.pdnghiadev.ex7_3contextualmenu.R;
+import com.gmail.pdnghiadev.ex7_3contextualmenu.database.DBAdapter;
 import com.gmail.pdnghiadev.ex7_3contextualmenu.model.Children;
 import com.gmail.pdnghiadev.ex7_3contextualmenu.ultils.DateConverter;
 
@@ -23,29 +27,23 @@ public class RedditAdapter extends RecyclerView.Adapter {
     private List<Children> listChildrend;
     private int isSticky;
     private int isNotSticky;
+    private DBAdapter dbAdapter;
 
     private final int VIEW_ITEM = 1;
     private final int VIEW_PROG = 0;
 
-    public RedditAdapter(List<Children> mChildren, int isSticky, int isNotSticky) {
+    public RedditAdapter(Context context, List<Children> mChildren, int isSticky, int isNotSticky) {
         this.listChildrend = mChildren;
         this.isSticky = isSticky;
         this.isNotSticky = isNotSticky;
+        dbAdapter = new DBAdapter(context);
+        dbAdapter.open();
     }
 
     @Override
     public int getItemViewType(int position) {
         return listChildrend.get(position) != null ? VIEW_ITEM : VIEW_PROG;
     }
-
-
-//    @Override
-//    public RedditViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post, parent, false);
-//
-//        return new RedditViewHolder(v);
-//    }
-
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -68,9 +66,9 @@ public class RedditAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         DateConverter dateConverter = new DateConverter();
-        Children children = listChildrend.get(position);
+        final Children children = listChildrend.get(position);
 
         if (holder instanceof RedditViewHolder){
             ((RedditViewHolder) holder).mScore.setText(String.valueOf(children.getScore()));
@@ -86,31 +84,23 @@ public class RedditAdapter extends RecyclerView.Adapter {
                     + " Comments • reddit • "
                     + dateConverter.displayTime(children.getCreateUTC());
             ((RedditViewHolder) holder).mCountComment.setText(comment);
+            ((RedditViewHolder) holder).mBookmark.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    children.setBookmark(!children.isBookmark());
+                    if (children.isBookmark()) {
+                        ((RedditViewHolder) holder).mBookmark.setBackgroundResource(R.drawable.ic_bookmark_star_selected);
+                        dbAdapter.insertChildren(children);
+                    } else {
+                        ((RedditViewHolder) holder).mBookmark.setBackgroundResource(R.drawable.ic_bookmark_star_unselected);
+                        dbAdapter.deleteChildren(children.getId());
+                    }
+                }
+            });
         }else {
             ((ProgressViewHolder) holder).progressBar.setIndeterminate(true);
         }
     }
-
-//    @Override
-//    public void onBindViewHolder(RedditViewHolder holder, int position) {
-//        DateConverter dateConverter = new DateConverter();
-//        Children children = listChildrend.get(position);
-//
-//
-//        holder.mScore.setText(String.valueOf(children.getScore()));
-//        holder.mAuthor.setText(children.getAuthor());
-//        holder.mSubreddit.setText(children.getSubreddit());
-//        if (children.isStickyPost()) {
-//            holder.mTitle.setTextColor(isSticky);
-//        } else {
-//            holder.mTitle.setTextColor(isNotSticky);
-//        }
-//        holder.mTitle.setText(children.getTitle());
-//        String comment = String.valueOf(children.getCommentCount())
-//                + " Comments • reddit • "
-//                + dateConverter.displayTime(children.getCreateUTC());
-//        holder.mCountComment.setText(comment);
-//    }
 
     public void clearAdapter() {
         listChildrend.clear();
@@ -124,6 +114,7 @@ public class RedditAdapter extends RecyclerView.Adapter {
 
     public static class RedditViewHolder extends RecyclerView.ViewHolder {
         public TextView mScore, mAuthor, mSubreddit, mTitle, mCountComment;
+        public Button mBookmark;
 
         public RedditViewHolder(View itemView) {
             super(itemView);
@@ -133,6 +124,7 @@ public class RedditAdapter extends RecyclerView.Adapter {
             this.mSubreddit = (TextView) itemView.findViewById(R.id.txt_subreddit);
             this.mTitle = (TextView) itemView.findViewById(R.id.txt_title);
             this.mCountComment = (TextView) itemView.findViewById(R.id.txt_count_comment);
+            this.mBookmark = (Button) itemView.findViewById(R.id.btn_bookmark);
         }
     }
 

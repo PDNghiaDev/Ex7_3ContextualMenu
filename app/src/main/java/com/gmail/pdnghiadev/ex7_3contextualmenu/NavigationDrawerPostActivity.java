@@ -11,6 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.gmail.pdnghiadev.ex7_3contextualmenu.fragments.BookmarkFragment;
+import com.gmail.pdnghiadev.ex7_3contextualmenu.fragments.PageFragment;
+
 public class NavigationDrawerPostActivity extends AppCompatActivity {
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
@@ -35,9 +38,11 @@ public class NavigationDrawerPostActivity extends AppCompatActivity {
 
         // Tie DrawerLayout events to the ActionBarToggle
         mDrawer.setDrawerListener(drawerToggle);
+
         Fragment fragment = PageFragment.newInstance(0);
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().add(R.id.flContent, fragment).commit();
+
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
@@ -58,32 +63,31 @@ public class NavigationDrawerPostActivity extends AppCompatActivity {
         // Create a new fragment and specify the planet to show based on
         // position
         Fragment fragment = null;
-        int page = 0;
-
-        Class fragmentClass;
         switch (item.getItemId()) {
             case R.id.nav_androiddev_fragment:
-                page = 0;
+                fragment = PageFragment.newInstance(0);
                 break;
             case R.id.nav_movies_fragment:
-                page = 1;
+                fragment = PageFragment.newInstance(1);
                 break;
             case R.id.nav_pics_fragment:
-                page = 2;
+                fragment = PageFragment.newInstance(2);
                 break;
             case R.id.nav_food_fragment:
-                page = 3;
+                fragment = PageFragment.newInstance(3);
                 break;
             case R.id.nav_music_fragment:
-                page = 4;
+                fragment = PageFragment.newInstance(4);
                 break;
             case R.id.nav_comic_fragment:
-                page = 5;
+                fragment = PageFragment.newInstance(5);
+                break;
+            case R.id.nav_bookmark_fragment:
+                fragment = new BookmarkFragment();
                 break;
             default:
-                page = 0;
+                fragment = PageFragment.newInstance(0);
         }
-        fragment = PageFragment.newInstance(page);
 
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();

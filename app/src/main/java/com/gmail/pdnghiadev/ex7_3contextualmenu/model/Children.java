@@ -15,6 +15,33 @@ public class Children {
     private String subreddit;
     private String domain;
     private long createUTC;
+    private boolean bookmark;
+
+    public Children() {
+        bookmark = false;
+    }
+
+    public Children(long createUTC, String id, String title, int score, int commentCount, String url, boolean isStickyPost, String author, String subreddit, String domain) {
+        this.createUTC = createUTC;
+        this.id = id;
+        this.title = title;
+        this.score = score;
+        this.commentCount = commentCount;
+        this.url = url;
+        this.isStickyPost = isStickyPost;
+        this.author = author;
+        this.subreddit = subreddit;
+        this.domain = domain;
+        bookmark = false;
+    }
+
+    public boolean isBookmark() {
+        return bookmark;
+    }
+
+    public void setBookmark(boolean bookmark) {
+        this.bookmark = bookmark;
+    }
 
     public String getAuthor() {
         return author;
